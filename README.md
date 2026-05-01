@@ -265,23 +265,113 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 }
 ```
 
-There are minor client-specific differences:
+### VS Code (GitHub Copilot MCP)
 
-- VS Code GitHub Copilot MCP uses `servers` instead of `mcpServers`
-- Codex CLI uses TOML in `~/.codex/config.toml`
-- Zed uses `context_servers`
-- Claude Code can register the server through `claude mcp add-json`
+```json
+{
+  "servers": {
+    "rapid-dev-guide": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+    }
+  }
+}
+```
 
-References:
+### Windsurf
 
-- VS Code MCP configuration: https://code.visualstudio.com/docs/copilot/reference/mcp-configuration
-- Windsurf Cascade MCP: https://docs.windsurf.com/windsurf/cascade/mcp
-- JetBrains AI Assistant MCP: https://www.jetbrains.com/help/ai-assistant/mcp.html
-- Junie MCP configuration: https://junie.jetbrains.com/docs/junie-cli-mcp-configuration.html
-- Cline MCP configuration: https://docs.cline.bot/mcp/adding-and-configuring-servers
-- Zed MCP configuration: https://zed.dev/docs/ai/mcp
-- Claude Code MCP: https://code.claude.com/docs/en/mcp
-- Codex MCP configuration: https://developers.openai.com/codex/config-reference
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+    }
+  }
+}
+```
+
+### JetBrains AI Assistant
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+    }
+  }
+}
+```
+
+### Junie
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+    }
+  }
+}
+```
+
+### Cline
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"],
+      "disabled": false
+    }
+  }
+}
+```
+
+### Zed
+
+```json
+{
+  "context_servers": {
+    "rapid-dev-guide": {
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Claude Code
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+    }
+  }
+}
+```
+
+### Codex (JSON Equivalent)
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+    }
+  }
+}
+```
 
 ## Development
 
