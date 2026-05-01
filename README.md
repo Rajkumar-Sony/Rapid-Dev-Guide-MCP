@@ -1,6 +1,10 @@
 # Rapid Dev Guide MCP
 
 <p align="center">
+  <img src="https://res.cloudinary.com/da2gkpbnz/image/upload/v1777613195/image-logo_ucpy6m.png" alt="Rapid Dev Guide MCP Logo" width="420" />
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/MCP-Ready-0A7B83?style=for-the-badge" alt="MCP Ready" />
   <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript 5.x" />
   <img src="https://img.shields.io/badge/Node.js-%3E%3D20-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js >=20" />
@@ -70,6 +74,10 @@ Rapid-Dev-Guide-MCP/
 ```
 
 ## How It Works
+
+<p align="center">
+  <img src="https://res.cloudinary.com/da2gkpbnz/image/upload/v1777613195/image2_dawpyb.png" alt="Rapid Dev Guide MCP Workflow" width="100%" />
+</p>
 
 At runtime:
 
@@ -397,5 +405,9 @@ This project is proprietary. See [LICENSE](./LICENSE). Do not copy, publish,
 redistribute, or use these files without explicit written permission.
 
 ---
+
+<p align="center">
+  <img src="https://res.cloudinary.com/da2gkpbnz/image/upload/v1777613195/image-logo2_neautj.png" alt="Rapid Dev Guide Mark" width="180" />
+</p>
 
 <p align="center">Build with ❤️ by Raj Kumar Sony.</p>
