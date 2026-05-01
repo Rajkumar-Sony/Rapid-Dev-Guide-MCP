@@ -1,5 +1,12 @@
 # Rapid Dev Guide MCP
 
+<p align="center">
+  <img src="https://img.shields.io/badge/MCP-Ready-0A7B83?style=for-the-badge" alt="MCP Ready" />
+  <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript 5.x" />
+  <img src="https://img.shields.io/badge/Node.js-%3E%3D20-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js >=20" />
+  <img src="https://img.shields.io/badge/License-Proprietary-222222?style=for-the-badge" alt="Proprietary License" />
+</p>
+
 Rapid Dev Guide MCP is a private Model Context Protocol server for applying
 development standards consistently across AI-assisted software projects.
 
@@ -299,4 +306,6 @@ npm run dev
 This project is proprietary. See [LICENSE](./LICENSE). Do not copy, publish,
 redistribute, or use these files without explicit written permission.
 
-Build with ❤️ by Raj Kumar Sony.
+---
+
+<p align="center">Build with ❤️ by Raj Kumar Sony.</p>
