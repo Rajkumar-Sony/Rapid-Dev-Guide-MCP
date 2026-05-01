@@ -1,0 +1,3 @@
+[submodule "Development-Rules"]
+	path = Development-Rules
+	url = https://github.com/Rajkumar-Sony/Development-Rules.git
