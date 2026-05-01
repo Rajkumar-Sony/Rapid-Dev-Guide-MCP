@@ -1,24 +1,96 @@
 # Rapid Dev Guide MCP
 
-Private MCP server for applying these development rule files to future projects.
+Rapid Dev Guide MCP is a private Model Context Protocol server for applying
+development standards consistently across AI-assisted software projects.
 
-The MCP package code lives in this root repository. The rule markdown files are
-provided by the `Development-Rules/` Git submodule, which points to the
-existing `Rajkumar-Sony/Development-Rules` repository.
+It combines:
 
-## Guarantee Model
+- an MCP server in this repository
+- a `Development-Rules/` Git submodule that contains the rule documents
+- task-oriented tools, prompts, and resources that guide planning, coding,
+  review, and final verification
 
-Installing an MCP server only makes the rules available. An MCP server cannot
-force every external IDE or agent to call it unless that client honors MCP
-server instructions or you add a mandatory global/project instruction.
+The goal is simple: make AI coding workflows ask the right setup questions,
+apply the right engineering rules, and verify the right checklist before
+finishing.
 
-For the strongest behavior, do both:
+## Overview
 
-1. Install this MCP server in the IDE or agent.
-2. Add the mandatory agent instruction below to that IDE or agent's custom
-   instructions, project rules, or system prompt area.
+Rapid Dev Guide MCP helps an AI client do three things well:
 
-Mandatory agent instruction:
+1. Select the relevant rules for a task.
+2. Run a structured intake before implementation.
+3. Verify completion against the appropriate checklist.
+
+This repository contains the MCP package and runtime code.
+
+The rule markdown files come from the existing GitHub repository mounted as a
+submodule:
+
+- `Development-Rules/` -> `https://github.com/Rajkumar-Sony/Development-Rules`
+
+## Why This Exists
+
+Most AI coding sessions fail for predictable reasons:
+
+- implementation starts before framework, runtime, testing, or deployment
+  decisions are confirmed
+- coding principles are implied instead of selected explicitly
+- security, quality, and architecture checks are applied too late
+- final responses do not verify whether project standards were followed
+
+Rapid Dev Guide MCP addresses that by exposing a reusable workflow through MCP.
+
+## Core Capabilities
+
+- Selects relevant rule files for a given software task
+- Generates a mandatory pre-coding intake questionnaire
+- Returns optional concept and coding-principle checklists
+- Exposes every rule file as a read-only MCP resource
+- Supports rule lookup, search, learning projects, and completion checklists
+- Works with MCP-capable IDEs, editors, and agent CLIs
+
+## Repository Structure
+
+```text
+Rapid-Dev-Guide-MCP/
+├── Development-Rules/     # Git submodule with rule markdown files
+├── src/                   # MCP server source
+├── dist/                  # Build output
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## How It Works
+
+At runtime:
+
+1. Your IDE or agent starts `dist/server.js`.
+2. The server loads rule documents from `Development-Rules/`.
+3. The client discovers MCP tools, prompts, and resources.
+4. During a task, the client calls tools such as `get_rules_for_task`,
+   `get_project_intake`, and `get_checklist`.
+5. The AI uses the returned guidance while planning, implementing, and
+   finishing the task.
+
+Important: installing the MCP server only makes the workflow available. It does
+not force every client to use it unless your client honors MCP instructions or
+you add a mandatory project/global instruction.
+
+## Recommended Workflow
+
+For the strongest results, configure your AI client to follow this sequence for
+every development task:
+
+1. Call `get_rules_for_task` before planning.
+2. Call `get_project_intake` before coding.
+3. Ask the user the returned setup questions.
+4. Present the returned concepts and coding principles for selection.
+5. Read and apply the relevant rule files.
+6. Call `get_checklist` before finishing.
+
+Recommended agent instruction:
 
 ```text
 For every software development task, you must use the Rapid Dev Guide MCP before
@@ -26,13 +98,11 @@ planning, coding, reviewing, or finishing.
 
 Required workflow:
 1. Call get_rules_for_task with the user's task context before making a plan.
-2. Call get_project_intake with the user's task context and any explicit rule
-   areas.
+2. Call get_project_intake with the user's task context and any explicit rule areas.
 3. Before coding implementation, ask the user the returned framework, language,
-   CSS/UI library, tooling, runtime, testing, deployment, and project
-   convention questions.
-4. Show the returned concepts and coding principles as optional checkboxes so
-   the user can manually select what applies to the project.
+   CSS/UI library, tooling, runtime, testing, deployment, and project convention questions.
+4. Show the returned concepts and coding principles as optional checkboxes so the
+   user can manually select what applies to the project.
 5. Do not start coding until the user answers the intake questions or explicitly
    approves reasonable defaults.
 6. Apply the returned rule files during implementation.
@@ -40,79 +110,37 @@ Required workflow:
 8. Use search_rules when a concept or coding principle needs clarification.
 9. Before the final response, call get_checklist for the most relevant rule area.
 10. In the final response, state which Rapid Dev Guide areas were applied and whether
-   the checklist passed.
-
-Do not skip this workflow unless the user explicitly says not to use Rapid Dev Guide
-MCP for the current task.
+    the checklist passed.
 ```
 
-Example user prompt:
+## Quick Start
 
-```text
-Use Rapid Dev Guide MCP. Apply frontend-development, security-and-privacy,
-configuration-and-environments, and testing-and-quality-gates while building
-this feature.
-
-Task: I want to build a React dashboard with login, forms, API calls, and dark
-mode.
-```
-
-If the IDE supports MCP prompts, use the `apply-rapid-dev-guide` prompt and pass the
-task plus optional forced areas.
-
-## Mandatory Intake Before Coding
-
-For frontend, REST API, backend microservices, and all other development areas,
-the agent must ask setup and concept-selection questions before implementation.
-
-The MCP tool for this is:
-
-```text
-get_project_intake
-```
-
-Example call:
-
-```json
-{
-  "task": "I want to build a React dashboard with login, forms, API calls, and dark mode.",
-  "areas": "frontend-development, security-and-privacy, configuration-and-environments, testing-and-quality-gates"
-}
-```
-
-The tool returns:
-
-- Required questions for framework, language, CSS/UI library, package/build
-  tooling, runtime, testing, deployment, and project conventions.
-- Area-specific questions for frontend, REST API, microservices, database,
-  cloud, security, documentation, and other rule files.
-- Optional markdown checkboxes for every concept and coding principle in the
-  relevant rule files.
-
-The agent must present those checkboxes to the user and wait for selection or
-approval of defaults before coding.
-
-## License
-
-This project is proprietary. See [LICENSE](./LICENSE). Do not copy, publish,
-redistribute, or use these files without explicit written permission.
-
-## Local Install
-
-Build the server:
+### 1. Clone the repository
 
 ```bash
-npm install
-npm run build
+git clone --recurse-submodules https://github.com/Rajkumar-Sony/Rapid-Dev-Guide-MCP.git
+cd Rapid-Dev-Guide-MCP
 ```
 
-If you cloned the root repository directly, initialize the submodule first:
+If you already cloned without submodules:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-Then configure any MCP-capable IDE or desktop client with the built server:
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Build the server
+
+```bash
+npm run build
+```
+
+### 4. Point your MCP client to the built server
 
 ```json
 {
@@ -125,45 +153,7 @@ Then configure any MCP-capable IDE or desktop client with the built server:
 }
 ```
 
-Use an absolute path for `dist/server.js`.
-
-## Private Git Install
-
-Keep the repository private, then point MCP clients at the Git package. The
-package runs `npm run build` during install through the `prepare` script.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "npx",
-      "args": ["-y", "git+ssh://git@github.com/YOUR_USER/YOUR_PRIVATE_REPO.git"]
-    }
-  }
-}
-```
-
-## Private Registry Install
-
-If you publish to a private npm or GitHub Packages registry, use:
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "npx",
-      "args": ["-y", "@your-private-scope/rapid-dev-guide-mcp"]
-    }
-  }
-}
-```
-
-Do not publish this package to a public registry unless you intentionally want
-other people to receive the files.
-
-## Development Mode
-
-For development without building first:
+For local development without a build step:
 
 ```json
 {
@@ -176,275 +166,106 @@ For development without building first:
 }
 ```
 
-## IDE And Agent Configuration
+## Example Task Flow
 
-Replace `/absolute/path/to/Rapid-Dev-Guide-MCP` with this repository's absolute path. Use the
-local `node dist/server.js` config when you work from this checkout. Use the
-private Git or private registry config when you want the same setup on multiple
-machines.
-
-### Standard MCP JSON Clients
-
-Use this shape for clients that accept an `mcpServers` JSON object, including
-Claude Desktop, Cursor, Windsurf, JetBrains AI Assistant, Junie, Cline, Roo Code,
-and many other MCP-compatible agent IDEs.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-    }
-  }
-}
-```
-
-Private Git install:
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "npx",
-      "args": ["-y", "git+ssh://git@github.com/YOUR_USER/YOUR_PRIVATE_REPO.git"]
-    }
-  }
-}
-```
-
-Private npm registry install:
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "npx",
-      "args": ["-y", "@your-private-scope/rapid-dev-guide-mcp"]
-    }
-  }
-}
-```
-
-### Cursor
-
-Add the standard `mcpServers` block to Cursor's MCP configuration.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-    }
-  }
-}
-```
-
-### Windsurf Cascade
-
-Add this to `~/.codeium/windsurf/mcp_config.json`.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-    }
-  }
-}
-```
-
-### Claude Desktop
-
-Add this to `claude_desktop_config.json`, then restart Claude Desktop.
-
-macOS:
+User request:
 
 ```text
-~/Library/Application Support/Claude/claude_desktop_config.json
+Build a React dashboard with login, forms, API calls, and dark mode.
 ```
 
-Windows:
+Expected MCP flow:
+
+1. `get_rules_for_task`
+2. `get_project_intake`
+3. user answers framework/language/tooling questions
+4. user selects concepts and coding principles
+5. implementation starts
+6. `get_checklist` runs before final completion
+
+Example direct prompt:
 
 ```text
-%APPDATA%\\Claude\\claude_desktop_config.json
+Use Rapid Dev Guide MCP. Apply frontend-development, security-and-privacy,
+configuration-and-environments, and testing-and-quality-gates while building
+this feature.
 ```
 
-Config:
+## Mandatory Intake Before Coding
+
+The `get_project_intake` tool returns:
+
+- framework and platform selection
+- programming language selection
+- package manager and build tool selection
+- CSS or UI library selection
+- runtime and version constraints
+- testing and quality gate selection
+- deployment environment selection
+- project convention requirements
+- area-specific follow-up questions for frontend, API, microservices, database,
+  cloud, security, and documentation
+- concept and coding-principle checklists
+
+Example input:
 
 ```json
 {
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-    }
-  }
+  "task": "Build a React dashboard with login, forms, API calls, and dark mode.",
+  "areas": "frontend-development, security-and-privacy, configuration-and-environments, testing-and-quality-gates"
 }
 ```
 
-### Claude Code
+## Tools
 
-Add the server with the CLI:
+- `list_rules`: List all available rule, learning, and index files.
+- `get_rule_set`: Read one rule file by id, alias, title, or filename.
+- `search_rules`: Search across rule documents and return compact matches.
+- `get_rules_for_task`: Select the most relevant rule files for a task.
+- `get_project_intake`: Generate pre-coding intake questions and concept selection.
+- `get_learning_projects`: Return guided learning projects by area.
+- `get_checklist`: Return the `Before Moving On` checklist for one rule area.
+- `rules_mcp_status`: Return server health and loaded rule-file counts.
 
-```bash
-claude mcp add-json rapid-dev-guide '{"type":"stdio","command":"node","args":["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]}'
-```
+## Prompts
 
-For a private registry package:
+- `apply-rapid-dev-guide`: Full workflow prompt for using the MCP server during a development task.
+- `project-intake-before-coding`: Prompt focused on mandatory setup and concept intake before implementation.
 
-```bash
-claude mcp add-json rapid-dev-guide '{"type":"stdio","command":"npx","args":["-y","@your-private-scope/rapid-dev-guide-mcp"]}'
-```
+## Resources
 
-### Codex CLI
-
-Add this to `~/.codex/config.toml`.
-
-```toml
-[mcp_servers.rapid_dev_guide]
-command = "node"
-args = ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-```
-
-For a private registry package:
-
-```toml
-[mcp_servers.rapid_dev_guide]
-command = "npx"
-args = ["-y", "@your-private-scope/rapid-dev-guide-mcp"]
-```
-
-### VS Code With GitHub Copilot MCP
-
-VS Code uses `.vscode/mcp.json` for workspace scope or the user-level `mcp.json`.
-Its key is `servers`, not `mcpServers`.
-
-```json
-{
-  "servers": {
-    "rapid-dev-guide": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-    }
-  }
-}
-```
-
-Private registry install:
-
-```json
-{
-  "servers": {
-    "rapid-dev-guide": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@your-private-scope/rapid-dev-guide-mcp"]
-    }
-  }
-}
-```
-
-### JetBrains AI Assistant
-
-Use `Settings` > `Tools` > `AI Assistant` > `Model Context Protocol (MCP)`,
-or paste this JSON into the MCP server configuration.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-    }
-  }
-}
-```
-
-### Junie
-
-Add this to `.junie/mcp/mcp.json` at project or user scope.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
-    }
-  }
-}
-```
-
-### Cline
-
-Add this through Cline's MCP Servers settings or directly in
-`cline_mcp_settings.json`.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"],
-      "disabled": false
-    }
-  }
-}
-```
-
-### Roo Code
-
-Roo Code uses the same MCP server shape as Cline.
-
-```json
-{
-  "mcpServers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"],
-      "disabled": false
-    }
-  }
-}
-```
-
-### Zed
-
-Zed uses `context_servers` in `settings.json`, not `mcpServers`.
-
-```json
-{
-  "context_servers": {
-    "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Generic Stdio MCP Client
-
-If an IDE or agent asks for command and arguments separately, use:
+Each markdown rule file is exposed as a read-only MCP resource, for example:
 
 ```text
-command: node
-args: /absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js
+rules://frontend-development
+rules://rest-api-development
+rules://backend-microservices
+rules://index
 ```
 
-If it asks for an npm package command, use:
+## Supported Client Configuration
 
-```text
-command: npx
-args: -y @your-private-scope/rapid-dev-guide-mcp
+Most MCP-capable clients can use the standard `mcpServers` JSON shape:
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "command": "node",
+      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+    }
+  }
+}
 ```
 
-## MCP Client References
+There are minor client-specific differences:
+
+- VS Code GitHub Copilot MCP uses `servers` instead of `mcpServers`
+- Codex CLI uses TOML in `~/.codex/config.toml`
+- Zed uses `context_servers`
+- Claude Code can register the server through `claude mcp add-json`
+
+References:
 
 - VS Code MCP configuration: https://code.visualstudio.com/docs/copilot/reference/mcp-configuration
 - Windsurf Cascade MCP: https://docs.windsurf.com/windsurf/cascade/mcp
@@ -455,42 +276,27 @@ args: -y @your-private-scope/rapid-dev-guide-mcp
 - Claude Code MCP: https://code.claude.com/docs/en/mcp
 - Codex MCP configuration: https://developers.openai.com/codex/config-reference
 
-## Tools
+## Development
 
-- `list_rules`: List available rule and learning-project files.
-- `get_rule_set`: Read one rule file by name, id, or filename.
-- `search_rules`: Search all rule files.
-- `get_rules_for_task`: Select relevant rule files for a project task.
-- `get_project_intake`: Return required pre-coding questions and optional
-  checkbox concept/principle selections for a task.
-- `get_learning_projects`: Return practice projects for frontend, REST API, or microservices.
-- `get_checklist`: Return the `Before Moving On` checklist for a rule area.
-- `rules_mcp_status`: Confirm server health and loaded file counts.
+Useful commands:
 
-## Prompts
-
-- `apply-rapid-dev-guide`: Reusable workflow prompt that tells the agent to call
-- `get_rules_for_task`, call `get_project_intake`, ask setup and concept
-  checkbox questions before coding, apply returned rule files, use specific rule
-  areas when requested, and verify the relevant checklist before finishing.
-- `project-intake-before-coding`: Reusable prompt focused only on asking the
-  framework/language/CSS/tooling questions and presenting concept/principle
-  checkbox selections before implementation.
-
-## Resources
-
-The server exposes every markdown rule file as a read-only MCP resource using
-URIs like:
-
-```text
-rules://frontend-development
-rules://rest-api-development
-rules://backend-microservices
-rules://index
+```bash
+npm install
+npm run build
+npm run typecheck
+npm run dev
 ```
 
-## Private Distribution
+## Packaging Notes
 
-Keep this package private. For easy installation across IDEs, use a private Git
-repository or private npm registry and point each IDE's MCP configuration at the
-same command.
+- The MCP runtime lives in the root repository.
+- The rule content is loaded from the `Development-Rules/` submodule.
+- The package is marked `private`.
+- The project is intended for private Git or private registry distribution.
+
+## License
+
+This project is proprietary. See [LICENSE](./LICENSE). Do not copy, publish,
+redistribute, or use these files without explicit written permission.
+
+Build with ❤️ by Raj Kumar Sony.
