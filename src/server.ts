@@ -17,7 +17,7 @@ type RuleFile = {
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "..");
-const rulesDir = path.join(rootDir, "Development-Rules");
+const rulesDir = path.join(rootDir, "rules");
 
 const ruleFiles: RuleFile[] = [
   {

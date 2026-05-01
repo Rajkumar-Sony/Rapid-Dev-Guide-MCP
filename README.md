@@ -17,7 +17,7 @@ development standards consistently across AI-assisted software projects.
 It combines:
 
 - an MCP server in this repository
-- a `Development-Rules/` Git submodule that contains the rule documents
+- a `rules/` Git submodule that contains the rule documents
 - task-oriented tools, prompts, and resources that guide planning, coding,
   review, and final verification
 
@@ -38,7 +38,7 @@ This repository contains the MCP package and runtime code.
 The rule markdown files come from the existing GitHub repository mounted as a
 submodule:
 
-- `Development-Rules/` -> `https://github.com/Rajkumar-Sony/Development-Rules`
+- `rules/` -> `https://github.com/Rajkumar-Sony/Development-Rules`
 
 ## Why This Exists
 
@@ -65,7 +65,7 @@ Rapid Dev Guide MCP addresses that by exposing a reusable workflow through MCP.
 
 ```text
 Rapid-Dev-Guide-MCP/
-├── Development-Rules/     # Git submodule with rule markdown files
+├── rules/                 # Git submodule with rule markdown files
 ├── src/                   # MCP server source
 ├── dist/                  # Build output
 ├── package.json
@@ -81,8 +81,8 @@ Rapid-Dev-Guide-MCP/
 
 At runtime:
 
-1. Your IDE or agent starts `dist/server.js`.
-2. The server loads rule documents from `Development-Rules/`.
+1. Your IDE or agent starts `rapid-dev-guide-mcp`, typically through `npx`.
+2. The server loads rule documents from `rules/`.
 3. The client discovers MCP tools, prompts, and resources.
 4. During a task, the client calls tools such as `get_rules_for_task`,
    `get_project_intake`, and `get_checklist`.
@@ -128,7 +128,76 @@ Required workflow:
     the checklist passed.
 ```
 
+## Recommended Install
+
+Best option depends on what you want, but in most cases:
+
+👉 Use `npx` / npm package
+
+### Best Overall: `npx` / npm package
+
+Why it is best:
+
+- No setup for users
+- Works on any PC instantly
+- No path issues
+- Same behavior as popular MCP servers
+
+Use this snippet for clients that use the `servers` key:
+
+```json
+{
+  "servers": {
+    "rapid-dev-guide": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
+    }
+  }
+}
+```
+
+Use this snippet for clients that use the `mcpServers` key:
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
+    }
+  }
+}
+```
+
+This is how most "plug and play" MCP servers work. The `-y` flag prevents
+`npx` from stopping the MCP client with an install confirmation prompt.
+
+If you distribute this package through a private npm registry, internal npm
+scope, or other package source, this should be the default setup you document
+for end users.
+
 ## Quick Start
+
+### Option 1. Use the package directly
+
+For most users, configure your MCP client to launch the package:
+
+```json
+{
+  "mcpServers": {
+    "rapid-dev-guide": {
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
+    }
+  }
+}
+```
+
+### Option 2. Clone the repository for development
+
+Use this path if you are actively developing the MCP server itself.
 
 ### 1. Clone the repository
 
@@ -260,14 +329,16 @@ rules://index
 
 ## Supported Client Configuration
 
+Package-based `npx` setup is the recommended default for most users.
+
 Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 
 ```json
 {
   "mcpServers": {
     "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
     }
   }
 }
@@ -280,8 +351,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
   "servers": {
     "rapid-dev-guide": {
       "type": "stdio",
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
     }
   }
 }
@@ -293,8 +364,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 {
   "mcpServers": {
     "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
     }
   }
 }
@@ -306,8 +377,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 {
   "mcpServers": {
     "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
     }
   }
 }
@@ -319,8 +390,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 {
   "mcpServers": {
     "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
     }
   }
 }
@@ -332,8 +403,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 {
   "mcpServers": {
     "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"],
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"],
       "disabled": false
     }
   }
@@ -346,8 +417,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 {
   "context_servers": {
     "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"],
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"],
       "env": {}
     }
   }
@@ -361,8 +432,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
   "mcpServers": {
     "rapid-dev-guide": {
       "type": "stdio",
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
     }
   }
 }
@@ -374,8 +445,8 @@ Most MCP-capable clients can use the standard `mcpServers` JSON shape:
 {
   "mcpServers": {
     "rapid-dev-guide": {
-      "command": "node",
-      "args": ["/absolute/path/to/Rapid-Dev-Guide-MCP/dist/server.js"]
+      "command": "npx",
+      "args": ["-y", "rapid-dev-guide-mcp@latest"]
     }
   }
 }
@@ -395,9 +466,11 @@ npm run dev
 ## Packaging Notes
 
 - The MCP runtime lives in the root repository.
-- The rule content is loaded from the `Development-Rules/` submodule.
-- The package is marked `private`.
-- The project is intended for private Git or private registry distribution.
+- The rule content is loaded from the `rules/` submodule.
+- The package is publishable so `npx rapid-dev-guide-mcp` can work from a
+  registry.
+- For private distribution, publish it to a private npm registry or internal
+  npm scope and keep the same MCP client snippet.
 
 ## License
 
