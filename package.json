@@ -1,0 +1,37 @@
+{
+  "name": "rapid-dev-guide-mcp",
+  "version": "0.1.0",
+  "description": "Private MCP server for applying personal development rules to projects.",
+  "type": "module",
+  "private": true,
+  "license": "UNLICENSED",
+  "bin": {
+    "rapid-dev-guide-mcp": "./dist/server.js"
+  },
+  "files": [
+    "dist",
+    "Development-Rules/*.md",
+    "*.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx src/server.ts",
+    "prepare": "npm run build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
