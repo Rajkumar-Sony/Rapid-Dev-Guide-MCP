@@ -406,8 +406,4 @@ redistribute, or use these files without explicit written permission.
 
 ---
 
-<p align="center">
-  <img src="https://res.cloudinary.com/da2gkpbnz/image/upload/v1777613195/image-logo2_neautj.png" alt="Rapid Dev Guide Mark" width="180" />
-</p>
-
 <p align="center">Build with ❤️ by Raj Kumar Sony.</p>
