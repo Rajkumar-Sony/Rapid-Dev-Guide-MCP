@@ -1,6 +1,6 @@
 {
   "name": "rapid-dev-guide-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for applying Rapid Dev Guide development rules to software projects.",
   "type": "module",
   "license": "UNLICENSED",

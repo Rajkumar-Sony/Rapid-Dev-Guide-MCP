@@ -262,7 +262,7 @@ Expected MCP flow:
 
 1. `get_rules_for_task`
 2. `get_project_intake`
-3. user answers framework/language/tooling questions
+3. agent asks required intake questions one-by-one and waits for each answer
 4. user selects concepts and coding principles
 5. implementation starts
 6. `get_checklist` runs before final completion
@@ -279,6 +279,7 @@ this feature.
 
 The `get_project_intake` tool returns:
 
+- an explicit instruction to ask required questions one-by-one and wait for each answer
 - framework and platform selection
 - programming language selection
 - package manager and build tool selection

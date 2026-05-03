@@ -360,6 +360,7 @@ type IntakeQuestion = {
 function formatQuestion(question: IntakeQuestion) {
   return [
     `- [ ] ${question.prompt}`,
+    "  - Ask this question now, wait for the user's answer, then continue to the next question.",
     ...question.options.map((option) => `  - ( ) ${option}`),
   ].join("\n");
 }
@@ -635,7 +636,9 @@ async function buildProjectIntake(task: string, areas?: string) {
     "",
     `Task: ${task}`,
     "",
-    "Ask the user these questions before starting implementation. The user can answer briefly and may leave non-applicable items as N/A.",
+    "Ask the user these questions before starting implementation.",
+    "Required interaction mode: ask exactly one required question at a time and wait for the user's answer before asking the next question.",
+    "The user can answer briefly and may leave non-applicable items as N/A.",
     "",
     "## Required Questions",
     "",
